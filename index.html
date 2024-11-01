@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link type="text/css" rel="stylesheet" href="/dhis-web-commons/font-awesome/css/font-awesome.min.css"/>
+    <link type="text/css" rel="stylesheet" media="screen" href="/dhis-web-commons/css/menu.css">
+    <title>Vite + Svelte + TS</title>
+  </head>
+  <body>
+    <div id="dhisDropDownMenu"></div>
+    <div id="app"></div>
+    <script>
+      window.dhis2 = window.dhis2 || {};
+      dhis2.settings = dhis2.settings || {};
+      dhis2.settings.baseUrl = '';
+    </script>
+    <script type="module" src="/src/main.ts"></script>
+    <script type="text/javascript" src="/dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+    <script type="text/javascript" src="./dhis2.translate.js"></script>
+	<script type="text/javascript" src="./dhis2.menu.js"></script>
+	<script type="text/javascript" src="./dhis2.menu.ui.js"></script>
+  </body>
+</html>
