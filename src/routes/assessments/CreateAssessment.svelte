@@ -1,5 +1,10 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { saveAssessment, saveProgramEvent } from '../../lib/core/AssessmentService';
+    import { Assessment, DatastoreAssessment, ProgramEvent } from '../../lib/core/models';
+    import { getUID } from '../../lib/core/SystemManager';
+    import { toISOStringFromDate } from '../../lib/util';
+    import { getOrgUnits } from '../../lib/core/OrganisationUnitManager';
   
     // Assessment form data
     let assessmentName = '';
@@ -19,16 +24,19 @@
   
     // Fetch organization units from DHIS2 API on component mount
     onMount(async () => {
-      try {
-        const response = await fetch(`${apiUrl}.json?fields=id,name&paging=false`, {
-          headers: authHeaders,
-        });
-        const data = await response.json();
-        orgUnits = data.organisationUnits;
-        filteredOrgUnits = orgUnits; // Initialize filtered list with all org units
-      } catch (error) {
-        console.error("Error fetching organization units:", error);
-      }
+    //   try {
+    //     const response = await fetch(`${apiUrl}.json?fields=id,name&paging=false`, {
+    //       headers: authHeaders,
+    //     });
+    //     const data = await response.json();
+    //     orgUnits = data.organisationUnits;
+    //     filteredOrgUnits = orgUnits; // Initialize filtered list with all org units
+    //   } catch (error) {
+    //     console.error("Error fetching organization units:", error);
+    //   }
+      orgUnits = await getOrgUnits();
+      console.log("On Mount", orgUnits);
+      filteredOrgUnits = orgUnits;
     });
   
     // Update filteredOrgUnits based on search query
@@ -37,18 +45,29 @@
     );
   
     // Handle form submission
-    function submitAssessmentForm() {
+    async function submitAssessmentForm() {
       const assessmentData = {
         name: assessmentName,
         date: assessmentDate,
         organizationUnit: selectedOrgUnit
       };
+      const uid = await getUID();
+      await saveAssessment(new DatastoreAssessment(uid, assessmentName, toISOStringFromDate(assessmentDate), [selectedOrgUnit]));
+      await saveProgramEvent(new ProgramEvent('viLWxLj3b50', selectedOrgUnit, toISOStringFromDate(assessmentDate), 'COMPLETED', [
+        {dataElement: 'Oe50IGDnfqL', value: 'Michael Mwebaze'}, 
+        {dataElement: 'jf6U41dolIX', value: 'Carryout facility RDQA'},
+        {dataElement: 'GAsP09gxkJT', value: 'Clinic Name'},
+        {dataElement: 'GrhbZdYdIOW', value: assessmentName},
+      ]));
       console.log("Assessment Submitted:", assessmentData);
+      assessmentName = '';
+        assessmentDate = '';
+        selectedOrgUnit = '';
       // Add logic to submit assessmentData to your server or backend here
+
     }
   </script>
   
-  <!-- Tailwind styling for the form and components -->
   <form class="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg" on:submit|preventDefault={submitAssessmentForm}>
     <h2 class="text-2xl font-semibold text-gray-800 mb-6">Create Assessment</h2>
     

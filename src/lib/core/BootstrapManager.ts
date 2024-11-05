@@ -1,13 +1,15 @@
+const authHeader = `Basic ${btoa('admin:@D1str1ct_M3')}`;
+const baseUrl = 'http://207.244.250.35:8095';
+
 export async function hasPermission(): Promise<boolean>{
-    const baseUrl =  "http://207.244.250.35:8095/";
     const headers = {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa("admin:@D1str1ct_M3")}`,
+        Authorization: authHeader,
     };
 
     try {
         // Check if the namespace exists
-        const response = await fetch(`${baseUrl}api/me.json?fields=userRoles[id,displayName]`, {
+        const response = await fetch(`${baseUrl}/api/me.json?fields=userRoles[id,displayName]`, {
             headers,
             method: "GET",
         });
@@ -29,16 +31,14 @@ export async function initializeNamespace() {
     const defaultData = {
         "installation": { status: "1" },
     };
-
-    const baseUrl =  "http://207.244.250.35:8095/";
     const headers = {
         "Content-Type": "application/json",
-        Authorization: `Basic ${btoa("admin:@D1str1ct_M3")}`, // Replace with valid credentials
+        Authorization: authHeader
     };
 
     try {
         // Check if the namespace exists
-        const response = await fetch(`${baseUrl}api/dataStore/${namespace}`, {
+        const response = await fetch(`${baseUrl}/api/dataStore/${namespace}`, {
             headers,
             method: "GET",
         });

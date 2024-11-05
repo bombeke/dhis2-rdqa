@@ -13,6 +13,19 @@ export class Assessment {
     }
 }
 
+export class DatastoreAssessment {
+    id: string;
+    name: string;
+    date: string;
+    facilities: string[];
+    public constructor(id: string, name: string, date: string, facilities: string[]){
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.facilities = facilities;
+    }
+}
+
 export class ProgramStage {
     id?: string;
     name: string;
@@ -39,5 +52,25 @@ export class DataElement {
         this.shortName = shortName;
         this.code = code;
         this.valueType = valueType;
+    }
+}
+
+export interface DataElementValue {
+    dataElement: string;
+    value: any;
+}
+
+export class ProgramEvent {
+    program: string;
+    orgUnit: string;
+    eventDate: string;
+    dataValues: DataElementValue[];
+    status: string;
+    public constructor(program:string, orgUnit:string, eventDate:string, status: string, dataValues: DataElementValue[]){
+        this.program = program;
+        this.orgUnit = orgUnit;
+        this.eventDate = eventDate;
+        this.status = status;
+        this.dataValues = dataValues;
     }
 }

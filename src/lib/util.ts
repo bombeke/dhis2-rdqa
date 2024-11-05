@@ -11,3 +11,8 @@ export async function loadDataElements(fileUrl: any) {
       return null;
     }
   }
+
+  export function toISOStringFromDate(dateTimeString: string) {
+    const date = new Date(dateTimeString);
+    return date.toISOString();
+  }

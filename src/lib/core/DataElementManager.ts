@@ -1,9 +1,11 @@
 import type { DataElement } from "./models";
+import { Config } from "./Settings";
+
+const authHeader = Config.authHeader;
+const baseUrl = Config.baseUrl;
 
 export async function createDataElements(dataElements: Array<DataElement>){
-    const authHeader = `Basic ${btoa('admin:@D1str1ct_M3')}`;
-    const endpoint = "http://207.244.250.35:8095/api/dataElements";
-    console.log(endpoint)
+    const endpoint = `${baseUrl}/api/dataElements`;
     for (const element of dataElements) {
       console.log(element);
         try {
@@ -29,16 +31,12 @@ export async function createDataElements(dataElements: Array<DataElement>){
 }
 
 export async function createDataElementGroup(groupName: string) {
-  const dhis2BaseUrl = "http://207.244.250.35:8095";
-  //const authHeader = `Basic ${btoa('admin':'D1str1ct_M3')}`;
-  const username = 'admin';
-const password = '@D1str1ct_M3';
-  console.log(`${dhis2BaseUrl}/api/dataElementGroups`)
-  const response = await fetch(`/api/dataElementGroups.json`, {
+  const endpoint = `${baseUrl}/api/dataElementGroups.json`;
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Basic ${btoa(`${username}:${password}`)}`
+        'Authorization': authHeader
     },
     body: JSON.stringify({
         name: groupName,

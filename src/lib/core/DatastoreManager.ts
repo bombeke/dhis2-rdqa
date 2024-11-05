@@ -1,17 +1,22 @@
+import { Config } from "./Settings";
+
+const authHeader = Config.authHeader;
+const baseUrl = Config.baseUrl;
+
 const namespace = "rdqa";
 const key = "assessments";
 const data = { exampleField: "exampleValue" };
 
 // Function to create the namespace and store data
 export async function createNamespace() {
-    const url = `http://your-dhis2-instance.org/api/dataStore/${namespace}/${key}`;
+    const endpoint = `${baseUrl}/api/dataStore/${namespace}/${key}`;
     
     try {
-        const response = await fetch(url, {
+        const response = await fetch(endpoint, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Basic " + btoa("username:password"),  // Replace with your auth mechanism
+                "Authorization": authHeader
             },
             body: JSON.stringify(data),
         });
